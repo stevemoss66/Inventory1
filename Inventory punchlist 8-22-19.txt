@@ -1,0 +1,6 @@
+item detail page doesn't have price formatting to include "cents place"
+sale buttons on list view don't function
+Item Details page has a checkmark submit button that doesn't do anything. Probably don't need it.
+Supplier phone pipeline needs to be set up
+Improve look/UI
+clean code (log messages, spaces, reformatting, etc.)

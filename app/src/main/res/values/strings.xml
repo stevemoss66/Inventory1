@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">Inventory</string>
+    <!-- Label for overflow menu option that inserts fake item data into the app [CHAR LIMIT=20] -->
+    <string name="action_insert_dummy_data">Insert Dummy Data</string>
+
+    <!-- Label for overflow menu option that deletes all item data in the app [CHAR LIMIT=20] -->
+    <string name="action_delete_all_entries">Delete All Items</string>
+
+    <!-- Main text for empty view -->
+    <string name="empty_view_title_text">No items entered</string>
+
+    <!-- subtitle text for empty view -->
+    <string name="empty_view_subtitle_text">Open menu to start entering items</string>
+    <string name="action_add_item">Add an Item</string>
+    <string name="product_name_label">Product Name</string>
+    <string name="price_label">Price</string>
+    <string name="price_edti_text_hint">price</string>
+    <!--Editor activity -->
+    <string name="editor_activity_title_new_item">Add an Item</string>
+    <string name="editor_activity_title_edit_item">Edit Item</string>
+    <string name="editor_insert_item_failed">Error inserting item</string>
+    <string name="editor_insert_item_successful">Item inserted</string>
+    <string name="editor_update_item_failed">Error updating item</string>
+    <string name="editor_update_item_successful">Item updated</string>
+    <!-- Label for editor menu option to save item and leave editor [CHAR LIMIT=20] -->
+    <string name="action_save">Save</string>
+
+    <!-- Label for editor overflow menu option that deletes the current item [CHAR LIMIT=20] -->
+    <string name="action_delete">Delete</string>
+    <!-- Dialog message when user is leaving editor but hasn't saved changes [CHAR LIMIT=NONE] -->
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+
+    <!-- Dialog button text for the option to discard a user's changes [CHAR LIMIT=20] -->
+    <string name="discard">Discard</string>
+
+    <!-- Dialog button text for the option to keep editing the current item [CHAR LIMIT=20] -->
+    <string name="keep_editing">Keep Editing</string>
+    <!-- Dialog message to ask the user to confirm deleting the current item [CHAR LIMIT=NONE] -->
+    <string name="delete_dialog_msg">Delete this item?</string>
+
+    <!-- Dialog button text for the option to confirm deleting the current item [CHAR LIMIT=20] -->
+    <string name="delete">Delete</string>
+
+    <!-- Dialog button text for the option to cancel deletion of the current item [CHAR LIMIT=20] -->
+    <string name="cancel">Cancel</string>
+
+    <!-- Toast message in editor when current item was successfully deleted [CHAR LIMIT=NONE] -->
+    <string name="editor_delete_item_successful">item deleted</string>
+
+    <!-- Toast message in editor when current item has failed to be deleted [CHAR LIMIT=NONE] -->
+    <string name="editor_delete_item_failed">Error with deleting item</string>
+
+    <!-- Item display strings -->
+    <string name="item_display_activity_title">Item Details</string>
+    <string name="open_parenthesis">(</string>
+    <string name="close_parenthesis">) </string>
+    <string name="space"> </string>
+    <string name="hyphen">-</string>
+
+
+</resources>
