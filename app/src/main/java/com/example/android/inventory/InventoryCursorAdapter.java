@@ -29,7 +29,7 @@ import com.example.android.inventory.data.InventoryContract.InventoryEntry;
 public class InventoryCursorAdapter extends CursorAdapter{
     public static final String LOG_TAG = InventoryContract.class.getSimpleName();
 
-
+    private final Context mContext;
 
     /**
      * Constructs a new {@link InventoryCursorAdapter}.
@@ -39,7 +39,9 @@ public class InventoryCursorAdapter extends CursorAdapter{
      */
     public InventoryCursorAdapter(Context context, Cursor c) {
         super(context, c, 0 /* flags */);
+        mContext = context;
     }
+
 
     /**
      * Makes a new blank list item view. No data is set (or bound) to the views yet.
@@ -67,7 +69,7 @@ public class InventoryCursorAdapter extends CursorAdapter{
      *                correct row.
      */
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, Cursor cursor) {
         // Find individual views that we want to modify in the list item layout
         TextView productNameTextView = (TextView) view.findViewById(R.id.product_name_textview);
         TextView priceTextView = (TextView) view.findViewById(R.id.price_textview);
@@ -118,7 +120,7 @@ Log.v(LOG_TAG, "currentItemUri: " + currentItemUri);
                final int finalReducedQuantity = reducedQuantity;
                ContentValues values = new ContentValues();
                values.put(InventoryEntry.COLUMN_QUANTITY, finalReducedQuantity);
-            int rowsAffected = getContentResolver().update(currentItemUri, values, null, null);
+            int rowsAffected = context.getContentResolver().update(currentItemUri, values, null, null);
            }
        });
 
