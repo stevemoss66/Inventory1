@@ -31,34 +31,54 @@ import com.example.android.inventory.data.InventoryContract.InventoryEntry;
 public class EditorActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    /** Identifier for the item data loader */
+    /**
+     * Identifier for the item data loader
+     */
     private static final int EXISTING_ITEM_LOADER = 0;
 
-    /** Content URI for the existing item (null if it's a new item) */
+    /**
+     * Content URI for the existing item (null if it's a new item)
+     */
     private Uri mCurrentItemUri;
 
-    /** EditText field to enter the item's name */
+    /**
+     * EditText field to enter the item's name
+     */
     private EditText mProductNameEditText;
 
-    /** EditText field to enter the item's price */
+    /**
+     * EditText field to enter the item's price
+     */
     private EditText mPriceEditText;
 
-    /** EditText field to enter the item quantity */
+    /**
+     * EditText field to enter the item quantity
+     */
     private EditText mQuantityEditText;
 
-    /** EditText field to enter the item's supplier name */
+    /**
+     * EditText field to enter the item's supplier name
+     */
     private EditText mSupplierNameEditText;
 
-    /** EditText field to enter the item's supplier area code */
+    /**
+     * EditText field to enter the item's supplier area code
+     */
     private EditText mSupplierPhoneAreaCodeEditText;
 
-    /** EditText field to enter the item's supplier phone prefix */
+    /**
+     * EditText field to enter the item's supplier phone prefix
+     */
     private EditText mSupplierPhonePrefixEditText;
 
-    /** EditText field to enter the item's supplier phone suffix */
+    /**
+     * EditText field to enter the item's supplier phone suffix
+     */
     private EditText mSupplierPhoneSuffixEditText;
 
-    /** Boolean flag that keeps track of whether the item has been edited (true) or not (false) */
+    /**
+     * Boolean flag that keeps track of whether the item has been edited (true) or not (false)
+     */
     private boolean mItemHasChanged = false;
 
     /**
@@ -106,9 +126,9 @@ public class EditorActivity extends AppCompatActivity implements
         mPriceEditText = (EditText) findViewById(R.id.price_textview);
         mQuantityEditText = (EditText) findViewById(R.id.quantity_textview);
         mSupplierNameEditText = (EditText) findViewById(R.id.supplier_name_textview);
-       mSupplierPhoneAreaCodeEditText = (EditText) findViewById(R.id.supplier_phone_area_code_edit);
-       mSupplierPhonePrefixEditText = (EditText) findViewById(R.id.supplier_phone_prefix_edit);
-       mSupplierPhoneSuffixEditText = (EditText) findViewById(R.id.supplier_phone_suffix_edit);
+        mSupplierPhoneAreaCodeEditText = (EditText) findViewById(R.id.supplier_phone_area_code_edit);
+        mSupplierPhonePrefixEditText = (EditText) findViewById(R.id.supplier_phone_prefix_edit);
+        mSupplierPhoneSuffixEditText = (EditText) findViewById(R.id.supplier_phone_suffix_edit);
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -117,10 +137,47 @@ public class EditorActivity extends AppCompatActivity implements
         mPriceEditText.setOnTouchListener(mTouchListener);
         mQuantityEditText.setOnTouchListener(mTouchListener);
         mSupplierNameEditText.setOnTouchListener(mTouchListener);
-       mSupplierPhoneAreaCodeEditText.setOnTouchListener(mTouchListener);
-       mSupplierPhonePrefixEditText.setOnTouchListener(mTouchListener);
-       mSupplierPhoneSuffixEditText.setOnTouchListener(mTouchListener);
-       mSupplierPhoneSuffixEditText.setOnTouchListener(mTouchListener);
+        mSupplierPhoneAreaCodeEditText.setOnTouchListener(mTouchListener);
+        mSupplierPhonePrefixEditText.setOnTouchListener(mTouchListener);
+        mSupplierPhoneSuffixEditText.setOnTouchListener(mTouchListener);
+        mSupplierPhoneSuffixEditText.setOnTouchListener(mTouchListener);
+    }
+//make sure database isn't queried unless all fields are not null
+    private boolean validate() {
+        String productNameString = mProductNameEditText.getText().toString().trim();
+        String priceString = mPriceEditText.getText().toString().trim();
+        String quantityString = mQuantityEditText.getText().toString().trim();
+        String supplierNameString = mSupplierNameEditText.getText().toString().trim();
+        String supplierPhoneAreaCodeString = mSupplierPhoneAreaCodeEditText.getText().toString().trim();
+        String supplierPhonePrefixString = mSupplierPhonePrefixEditText.getText().toString().trim();
+        String supplierPhoneSuffixString = mSupplierPhoneSuffixEditText.getText().toString().trim();
+
+        if (productNameString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.please_enter_item_name),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (priceString.isEmpty()){
+            Toast.makeText(this, getString(R.string.please_enter_valid_price),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (quantityString.isEmpty()){
+                Toast.makeText(this, getString(R.string.please_enter_valid_quantity),
+                        Toast.LENGTH_SHORT).show();
+                return false;
+        } else if (supplierNameString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.please_enter_supplier_name),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (supplierPhoneAreaCodeString.isEmpty() || supplierPhonePrefixString.isEmpty() ||
+                supplierPhoneSuffixString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.please_enter_supplier_phone_number),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else {
+            return true;
+        }
+
     }
 
     /**
@@ -133,17 +190,20 @@ public class EditorActivity extends AppCompatActivity implements
         String priceString = mPriceEditText.getText().toString().trim();
         String quantityString = mQuantityEditText.getText().toString().trim();
         String supplierNameString = mSupplierNameEditText.getText().toString().trim();
-       String supplierPhoneAreaCodeString = mSupplierPhoneAreaCodeEditText.getText().toString().trim();
-       String supplierPhonePrefixString = mSupplierPhonePrefixEditText.getText().toString().trim();
-       String supplierPhoneSuffixString = mSupplierPhoneSuffixEditText.getText().toString().trim();
+        String supplierPhoneAreaCodeString = mSupplierPhoneAreaCodeEditText.getText().toString().trim();
+        String supplierPhonePrefixString = mSupplierPhonePrefixEditText.getText().toString().trim();
+        String supplierPhoneSuffixString = mSupplierPhoneSuffixEditText.getText().toString().trim();
+
+        //validate input
+
 
         // Check if this is supposed to be a new item
         // and check if all the fields in the editor are blank
         if (mCurrentItemUri == null &&
                 TextUtils.isEmpty(productNameString) && TextUtils.isEmpty(priceString) &&
-                TextUtils.isEmpty(quantityString) && TextUtils.isEmpty(supplierNameString)) {
-    //Later, add: &&
-            //        TextUtils.isEmpty(supplierPhoneNumberString)
+                TextUtils.isEmpty(quantityString) && TextUtils.isEmpty(supplierNameString) && TextUtils.isEmpty(supplierPhoneAreaCodeString)
+                && TextUtils.isEmpty(supplierPhonePrefixString) && TextUtils.isEmpty(supplierPhoneSuffixString)) {
+
             // Since no fields were modified, we can return early without creating a new item.
             // No need to create ContentValues and no need to do any ContentProvider operations.
             return;
@@ -194,6 +254,7 @@ public class EditorActivity extends AppCompatActivity implements
                         Toast.LENGTH_SHORT).show();
             }
         }
+
     }
 
     @Override
@@ -225,12 +286,17 @@ public class EditorActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                // Save item to database
-                saveItem();
-                // Exit activity
-                finish();
-                return true;
-            // Respond to a click on the "Delete" menu option
+                //run validate on data before saving to prevent crashing due to illegalArgumentExceptions
+                if (validate()) {
+                    // Save item to database
+                    saveItem();
+                    // Exit activity
+                    finish();
+                    return true;
+                } else {
+                    return false;
+                }
+                // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
                 // Pop up confirmation dialog for deletion
                 showDeleteConfirmationDialog();
@@ -299,9 +365,9 @@ public class EditorActivity extends AppCompatActivity implements
                 InventoryEntry.COLUMN_PRICE,
                 InventoryEntry.COLUMN_QUANTITY,
                 InventoryEntry.COLUMN_SUPPLIER_NAME,
-        InventoryEntry.COLUMN_SUPPLIER_PHONE_AREA_CODE,
-        InventoryEntry.COLUMN_SUPPLIER_PHONE_PREFIX,
-        InventoryEntry.COLUMN_SUPPLIER_PHONE_SUFFIX};
+                InventoryEntry.COLUMN_SUPPLIER_PHONE_AREA_CODE,
+                InventoryEntry.COLUMN_SUPPLIER_PHONE_PREFIX,
+                InventoryEntry.COLUMN_SUPPLIER_PHONE_SUFFIX};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -360,15 +426,16 @@ public class EditorActivity extends AppCompatActivity implements
             mSupplierPhoneSuffixEditText.setText(Integer.toString(supplierPhoneSuffix));
         }
     }
+
     public void onLoaderReset(Loader<Cursor> loader) {
         // If the loader is invalidated, clear out all the data from the input fields.
         mProductNameEditText.setText("");
         mPriceEditText.setText("");
         mQuantityEditText.setText("");
         mSupplierNameEditText.setText("");
-       mSupplierPhoneAreaCodeEditText.setText("");
-       mSupplierPhonePrefixEditText.setText("");
-       mSupplierPhoneSuffixEditText.setText("");
+        mSupplierPhoneAreaCodeEditText.setText("");
+        mSupplierPhonePrefixEditText.setText("");
+        mSupplierPhoneSuffixEditText.setText("");
     }
 
     /**
